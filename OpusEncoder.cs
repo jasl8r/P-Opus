@@ -263,13 +263,30 @@ namespace POpusCodec
             return encodedData;
         }
 
+        private bool disposed = false;
+
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
             if (_handle != IntPtr.Zero)
             {
                 Wrapper.opus_encoder_destroy(_handle);
                 _handle = IntPtr.Zero;
             }
+            disposed = true;
+        }
+
+        ~OpusEncoder()
+        {
+            Dispose(false);
         }
     }
 }

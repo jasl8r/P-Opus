@@ -153,13 +153,30 @@ namespace POpusCodec
             return pcm;
         }
 
+        private bool disposed = false;
+
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
             if (_handle != IntPtr.Zero)
             {
                 Wrapper.opus_decoder_destroy(_handle);
                 _handle = IntPtr.Zero;
             }
+            disposed = true;
+        }
+
+        ~OpusDecoder()
+        {
+            Dispose(false);
         }
     }
 }
