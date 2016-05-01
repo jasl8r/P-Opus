@@ -224,7 +224,7 @@ namespace POpusCodec
             _inputSamplingRate = inputSamplingRateHz;
             _inputChannels = numChannels;
             _handle = Wrapper.opus_encoder_create(inputSamplingRateHz, numChannels, applicationType);
-            _version = Wrapper.opus_get_version_string();
+            _version = Wrapper.opus_get_version();
 
             if (_handle == IntPtr.Zero)
             {

@@ -16,7 +16,12 @@ namespace POpusCodec
         private static extern OpusStatusCode opus_encoder_init(IntPtr st, SamplingRate Fs, Channels channels, OpusApplicationType application);
 
         [DllImport("libopus.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        public static extern string opus_get_version_string();
+        private static extern IntPtr opus_get_version_string();
+
+        public static string opus_get_version()
+        {
+            return Marshal.PtrToStringAuto(opus_get_version_string());
+        }
 
         public static IntPtr opus_encoder_create(SamplingRate Fs, Channels channels, OpusApplicationType application)
         {
@@ -225,14 +230,18 @@ namespace POpusCodec
         public static extern int opus_packet_get_nb_channels(byte[] data);
 
         [DllImport("libopus.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        private static extern string opus_strerror(OpusStatusCode error);
+        private static extern IntPtr opus_strerror(OpusStatusCode error);
 
+        private static string opus_error(OpusStatusCode error)
+        {
+            return Marshal.PtrToStringAuto(opus_strerror(error));
+        }
 
         private static void HandleStatusCode(OpusStatusCode statusCode)
         {
             if (statusCode != OpusStatusCode.OK)
             {
-                throw new OpusException(statusCode, opus_strerror(statusCode));
+                throw new OpusException(statusCode, opus_error(statusCode));
             }
         }
     }

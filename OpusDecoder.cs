@@ -50,7 +50,7 @@ namespace POpusCodec
 
             _channelCount = (int)numChannels;
             _handle = Wrapper.opus_decoder_create(outputSamplingRateHz, numChannels);
-            _version = Wrapper.opus_get_version_string();
+            _version = Wrapper.opus_get_version();
 
             if (_handle == IntPtr.Zero)
             {
@@ -110,7 +110,7 @@ namespace POpusCodec
             {
                 _previousPacketBandwidth = (Bandwidth)bandwidth;
                 numSamplesDecoded = Wrapper.opus_decode(_handle, packetData, tempData, _previousPacketInvalid ? 1 : 0, _channelCount);
-                
+
                 _previousPacketInvalid = false;
             }
 
