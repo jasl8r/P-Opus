@@ -179,18 +179,14 @@ namespace POpusCodec
         }
 
         public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels)
-            : this(inputSamplingRateHz, numChannels,  120000, OpusApplicationType.Audio, Delay.Delay20ms)
+            : this(inputSamplingRateHz, numChannels,  OpusApplicationType.Audio, Delay.Delay20ms)
         { }
 
-        public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels, int bitrate)
-            : this(inputSamplingRateHz, numChannels, bitrate, OpusApplicationType.Audio, Delay.Delay20ms)
+        public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels, OpusApplicationType applicationType)
+            : this(inputSamplingRateHz, numChannels, applicationType, Delay.Delay20ms)
         { }
 
-        public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels, int bitrate, OpusApplicationType applicationType)
-            : this(inputSamplingRateHz, numChannels, bitrate, applicationType, Delay.Delay20ms)
-        { }
-
-        public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels, int bitrate, OpusApplicationType applicationType, Delay encoderDelay)
+        public OpusEncoder(SamplingRate inputSamplingRateHz, Channels numChannels, OpusApplicationType applicationType, Delay encoderDelay)
         {
             if ((inputSamplingRateHz != SamplingRate.Sampling08000)
                 && (inputSamplingRateHz != SamplingRate.Sampling12000)
@@ -232,7 +228,6 @@ namespace POpusCodec
             }
 
             EncoderDelay = encoderDelay;
-            Bitrate = bitrate;
         }
 
         public byte[] Encode(short[] pcmSamples) //pcmSamples: length is frame_size*channels*sizeof(short) 
